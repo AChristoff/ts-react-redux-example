@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ApplicationState, onLogin } from '../redux'
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('test@test.com')
+  const [password, setPassword] = useState('1234567')
 
   const dispatch = useDispatch()
 
-  const { user, error } = useSelector((state: ApplicationState) => state.UserReducer )
+  const { loading, error, user } = useSelector((state: ApplicationState) => state.UserReducer )
   const { token } = user;
   console.log(token);
   
@@ -45,6 +45,8 @@ const LoginScreen = () => {
         </p>
         <button type="submit">Login</button>
       </form>
+      {loading && <h3>LOADING...</h3>}
+      {error && <h3>LOGIN FAILED!</h3>}
     </div>
   )
 }
