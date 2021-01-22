@@ -1,15 +1,13 @@
 import './App.scss';
 
+import LoginScreen from './screens/LoginScreen'
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          <button>Get user</button>
-        </p>
-      </header>
+    <div className='App'>
+      <LoginScreen />
     </div>
-  );
+  )
 }
 
 export default App;

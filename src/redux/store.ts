@@ -1,15 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-
-
-import {
-  userDetailsReducer,
-} from './reducers/userReducers'
-
-const rootReducer = combineReducers({
-  userDetails: userDetailsReducer,
-})
+import { rootReducer } from './reducers'
 
 const initialState = {}
 
@@ -21,6 +13,4 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 )
 
-export type State = ReturnType<typeof rootReducer> 
-
-export default store
+export { store }

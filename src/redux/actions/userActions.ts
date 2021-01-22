@@ -1,42 +1,57 @@
-import { userDetailsAction, IUserDetails } from '../constants/userConstants'
 import axios from 'axios'
-import { RootState } from '../store'
 import { Dispatch } from 'react'
 
-export const getUserDetails = (id: string) => async (dispatch: Dispatch<userDetailsAction>, getState) => {
+export interface UserModel {
+  firstName: string
+  lastName: string
+  subscription: string
+  token: string
+}
+
+export interface LoginAction {
+  readonly type: 'ON_LOGIN'
+  payload: UserModel
+}
+
+export interface ErrorAction {
+  readonly type: 'ON_ERROR'
+  payload: any
+}
+
+export type UserAction = LoginAction | ErrorAction
+
+export const onLogin = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {
   try {
-    dispatch({
-      type: 'USER_DETAILS_REQUEST',
-      payload: {}
-    })
+    const response = await axios.post<UserModel>(
+      'https://netflix-example.herokuapp.com/user/mock-login',
+      {
+        email,
+        password,
+      }
+    )
 
-    const {
-      userLogin: { userInfo },
-    } = getState()
-
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+    if (!response) {
+      dispatch({
+        type: 'ON_ERROR',
+        payload: 'Login failed!',
+      })
+    } else {
+      dispatch({
+        type: 'ON_LOGIN',
+        payload: response.data,
+      })
     }
-
-    const { data } = await axios.get(`/api/users/${id}`, config)
-
-    dispatch({
-      type: USER_DETAILS_SUCCESS,
-      payload: data,
-    })
   } catch (error) {
     dispatch({
-      type: USER_DETAILS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.response,
+      type: 'ON_ERROR',
+      payload: error
     })
   }
 }
 
+// https://netflix-example.herokuapp.com/user/mock-login
 
-//https://reqres.in/api/users/2
+// {
+//   "email": "test@test.com",
+//   "password": "1234567"
+// }
