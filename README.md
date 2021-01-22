@@ -1,1 +1,1 @@
-# Boilerplate for TypeScript/Node/Express server
+# Boilerplate for React/Redux/TypeScript app
