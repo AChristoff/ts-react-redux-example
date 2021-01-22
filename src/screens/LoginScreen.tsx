@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ListFormat } from 'typescript'
 import { login } from '../redux/actions/userActions'
 import { ApplicationState } from '../redux/reducers/rootReducer'
 
@@ -13,10 +12,8 @@ const LoginScreen = () => {
 
   const { loading, error, user } = useSelector((state: ApplicationState) => state.userLogin )
 
-  const submitHandler = (e: React.FormEvent<EventTarget>): void => {
+  const submitHandler = (e: FormEvent) => {
     e.preventDefault()
-    let target = e.target as HTMLInputElement;
-    console.log(target);
     
     dispatch(login(email, password))
   }

@@ -1,15 +1,15 @@
 import { UserLoginAction, UserLoginModel } from '../types/userTypes'
 
-type UserLoginState = {
+export type UserLoginState = {
   loading: boolean
   user: UserLoginModel
-  error: string | undefined
+  error: string | null
 }
 
 const initialLoginState = {
   loading: false,
   user: {} as UserLoginModel,
-  error: undefined,
+  error: null,
 }
 
 export const userLoginReducer = (state: UserLoginState = initialLoginState, action: UserLoginAction) => {
@@ -20,6 +20,7 @@ export const userLoginReducer = (state: UserLoginState = initialLoginState, acti
       return {
         ...state,
         user: action.payload,
+        error: '',
         loading: true
       }
     case 'USER_LOGIN_SUCCESS':
