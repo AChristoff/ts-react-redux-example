@@ -1,20 +1,24 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { ApplicationState, onLogin } from '../redux'
+import { ListFormat } from 'typescript'
+import { login } from '../redux/actions/userActions'
+import { ApplicationState } from '../redux/reducers/rootReducer'
 
 const LoginScreen = () => {
+
   const [email, setEmail] = useState('test@test.com')
   const [password, setPassword] = useState('1234567')
 
   const dispatch = useDispatch()
 
-  const { loading, error, user } = useSelector((state: ApplicationState) => state.UserReducer )
-  const { token } = user;
+  const { loading, error, user } = useSelector((state: ApplicationState) => state.userLogin )
 
-  const submitHandler = (e: any) => {
+  const submitHandler = (e: React.FormEvent<EventTarget>): void => {
     e.preventDefault()
-
-    dispatch(onLogin(email, password))
+    let target = e.target as HTMLInputElement;
+    console.log(target);
+    
+    dispatch(login(email, password))
   }
 
   useEffect(() => {

@@ -1,36 +1,34 @@
-import { UserAction, UserModel } from '../actions/userActions'
+import { UserLoginAction, UserLoginModel } from '../types/userTypes'
 
-type UserState = {
+type UserLoginState = {
   loading: boolean
-  user: UserModel
+  user: UserLoginModel
   error: string | undefined
 }
 
-const initialState = {
+const initialLoginState = {
   loading: false,
-  user: {} as UserModel,
+  user: {} as UserLoginModel,
   error: undefined,
 }
 
-const UserReducer = (state: UserState = initialState, action: UserAction) => {
+export const userLoginReducer = (state: UserLoginState = initialLoginState, action: UserLoginAction) => {
 
   switch(action.type) {
 
-    case 'ON_LOADING':
+    case 'USER_LOGIN_REQUEST':
       return {
         ...state,
         user: action.payload,
         loading: true
-
       }
-    case 'ON_LOGIN':
+    case 'USER_LOGIN_SUCCESS':
       return {
         ...state,
         user: action.payload,
         loading: false
-
       }
-    case 'ON_ERROR':
+    case 'USER_LOGIN_ERROR':
       return {
         ...state,
         error: action.payload,
@@ -40,5 +38,3 @@ const UserReducer = (state: UserState = initialState, action: UserAction) => {
       return state
   }
 }
-
-export { UserReducer }

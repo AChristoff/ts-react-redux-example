@@ -1,42 +1,16 @@
 import axios from 'axios'
 import { Dispatch } from 'react'
+import { UserLoginModel, UserLoginAction } from '../types/userTypes'
 
-export interface UserModel {
-  firstName: string
-  lastName: string
-  subscription: string
-  token: string
-}
-
-export interface LoadingAction {
-  readonly type: 'ON_LOADING'
-  payload: any
-  loading: boolean
-}
-export interface LoginAction {
-  readonly type: 'ON_LOGIN'
-  payload: UserModel
-  loading: boolean
-}
-
-export interface ErrorAction {
-  readonly type: 'ON_ERROR'
-  payload: any
-  loading: boolean
-}
-
-export type UserAction = LoginAction | ErrorAction | LoadingAction
-
-export const onLogin = (email: string, password: string) => async (dispatch: Dispatch<UserAction>) => {
+export const login = (email: string, password: string) => async (dispatch: Dispatch<UserLoginAction>) => {
   try {
-
     dispatch({
-      type: 'ON_LOADING',
-      payload: '',
-      loading: true
+      type: 'USER_LOGIN_REQUEST',
+      loading: true,
+      payload: {} as UserLoginModel,
     })
 
-    const response = await axios.post<UserModel>(
+    const response = await axios.post<UserLoginModel>(
       'https://netflix-example.herokuapp.com/user/mock-login',
       {
         email,
@@ -44,31 +18,16 @@ export const onLogin = (email: string, password: string) => async (dispatch: Dis
       }
     )
 
-    if (!response) {
-      dispatch({
-        type: 'ON_ERROR',
-        payload: 'Login failed!',
-        loading: false
-      })
-    } else {
-      dispatch({
-        type: 'ON_LOGIN',
-        payload: response.data,
-        loading: false
-      })
-    }
+    dispatch({
+      type: 'USER_LOGIN_SUCCESS',
+      loading: false,
+      payload: response.data,
+    })
   } catch (error) {
     dispatch({
-      type: 'ON_ERROR',
+      type: 'USER_LOGIN_ERROR',
+      loading: false,
       payload: error,
-      loading: false
     })
   }
 }
-
-// https://netflix-example.herokuapp.com/user/mock-login
-
-// {
-//   "email": "test@test.com",
-//   "password": "1234567"
-// }
