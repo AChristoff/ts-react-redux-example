@@ -7,9 +7,9 @@ type UserState = {
 }
 
 const initialState = {
+  loading: false,
   user: {} as UserModel,
   error: undefined,
-  loading: false
 }
 
 const UserReducer = (state: UserState = initialState, action: UserAction) => {

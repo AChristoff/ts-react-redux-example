@@ -10,14 +10,16 @@ const LoginScreen = () => {
 
   const { loading, error, user } = useSelector((state: ApplicationState) => state.UserReducer )
   const { token } = user;
-  console.log(token);
-  
 
   const submitHandler = (e: any) => {
     e.preventDefault()
 
     dispatch(onLogin(email, password))
   }
+
+  useEffect(() => {
+      // TODO: Redirect 
+  },[user])
 
   return (
     <div>
@@ -46,6 +48,7 @@ const LoginScreen = () => {
         <button type="submit">Login</button>
       </form>
       {loading && <h3>LOADING...</h3>}
+      {user.firstName && <h3>{`Welcome ${user.firstName}`}</h3>}
       {error && <h3>LOGIN FAILED!</h3>}
     </div>
   )
